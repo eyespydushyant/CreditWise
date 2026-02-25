@@ -1,0 +1,11 @@
+=== 🔗 SHARE YOUR APP ===
+
+Your website is LIVE at this link:
+https://cw-dushy.loca.lt
+
+=== 🔑 PASSWORD ===
+When someone opens the link, if it asks for a "Tunnel Password", give them this number:
+2402:3a80:438b:ef6f:1ddb:85ff:cadf:8a31
+
+Note: This link works as long as your computer is ON and the terminal is running.
+If you close the terminal, you need to run `npx localtunnel --port 5173 --subdomain cw-dushy` again.

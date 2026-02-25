@@ -1,0 +1,10 @@
+flask
+flask-cors
+flask-sqlalchemy
+pandas
+numpy
+scikit-learn
+joblib
+gunicorn
+google-auth
+PyJWT
