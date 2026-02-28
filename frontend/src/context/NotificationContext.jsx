@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 
+/* eslint-disable react-refresh/only-export-components */
+
 const NotificationContext = createContext();
 
 export function useNotification() {
@@ -8,6 +10,10 @@ export function useNotification() {
 
 export function NotificationProvider({ children }) {
     const [notifications, setNotifications] = useState([]);
+
+    const removeNotification = useCallback((id) => {
+        setNotifications((prev) => prev.filter((notification) => notification.id !== id));
+    }, []);
 
     const addNotification = useCallback((message, type = 'info') => {
         const id = Date.now().toString();
@@ -21,11 +27,7 @@ export function NotificationProvider({ children }) {
         }, 5000);
 
         return id;
-    }, []);
-
-    const removeNotification = useCallback((id) => {
-        setNotifications((prev) => prev.filter((notification) => notification.id !== id));
-    }, []);
+    }, [removeNotification]);
 
     const clearNotifications = useCallback(() => {
         setNotifications([]);

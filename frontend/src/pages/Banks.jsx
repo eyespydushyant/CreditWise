@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Building, ArrowRight, Star, ExternalLink, CheckCircle } from 'lucide-react';
 
 const banks = [
@@ -125,7 +125,6 @@ const banks = [
 ];
 
 function Banks() {
-    const [hoveredId, setHoveredId] = useState(null);
 
     return (
         <div className="min-h-[calc(100vh-64px)] bg-gray-50 dark:bg-slate-900 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
@@ -149,8 +148,6 @@ function Banks() {
                     {banks.map((bank) => (
                         <div
                             key={bank.id}
-                            onMouseEnter={() => setHoveredId(bank.id)}
-                            onMouseLeave={() => setHoveredId(null)}
                             className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-md border border-gray-200 dark:border-slate-700 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
                         >
                             {/* Card Header */}

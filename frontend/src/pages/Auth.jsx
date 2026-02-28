@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { GoogleLogin } from '@react-oauth/google';
 import { LogIn, UserPlus, Mail, Lock, User, ArrowRight, Sparkles } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 
 function Auth() {
     const [isLogin, setIsLogin] = useState(true);
@@ -48,7 +48,7 @@ function Auth() {
                     setError(result.error || 'Signup failed. Username or Email may already exist.');
                 }
             }
-        } catch (err) {
+        } catch {
             setError('Connection failed. Our server might be starting up—please try again in 30 seconds.');
         } finally {
             clearTimeout(hintTimer);
@@ -69,7 +69,7 @@ function Auth() {
             } else {
                 setError(result.error || 'Google login failed.');
             }
-        } catch (err) {
+        } catch {
             setError('Google login failed. Please try again.');
         } finally {
             clearTimeout(hintTimer);

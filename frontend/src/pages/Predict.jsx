@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Building, ArrowRight, CheckCircle, Smartphone, ShieldCheck, Briefcase, Landmark, Sparkles, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { predictLoan } from '../api';
 
 const inputClass = "w-full bg-slate-900/50 dark:bg-slate-900/50 bg-gray-100 border border-slate-600 dark:border-slate-600 border-gray-300 rounded-lg px-4 py-2.5 text-slate-200 dark:text-slate-200 text-gray-800 focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all outline-none placeholder-slate-500";
@@ -66,13 +66,14 @@ function Predict() {
         const params = new URLSearchParams(window.location.search);
         const updates = {};
         params.forEach((value, key) => {
-            if (formData.hasOwnProperty(key)) {
+            if (Object.prototype.hasOwnProperty.call(formData, key)) {
                 updates[key] = value;
             }
         });
         if (Object.keys(updates).length > 0) {
             setFormData(prev => ({ ...prev, ...updates }));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleChange = (e) => {
@@ -384,7 +385,5 @@ function Predict() {
         </div>
     );
 }
-
-export default Predict;
 
 export default Predict;

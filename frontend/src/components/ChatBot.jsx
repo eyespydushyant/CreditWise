@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
+let nextId = 2;
 
 function ChatBot() {
     const [isOpen, setIsOpen] = useState(false);
@@ -20,14 +21,14 @@ function ChatBot() {
     const handleSend = () => {
         if (!input.trim()) return;
 
-        const userMessage = { id: Date.now(), text: input, sender: 'user' };
+        const userMessage = { id: nextId++, text: input, sender: 'user' };
         setMessages(prev => [...prev, userMessage]);
         setInput('');
 
         // Simulate bot response
         setTimeout(() => {
             const botResponse = getBotResponse(input);
-            setMessages(prev => [...prev, { id: Date.now() + 1, text: botResponse, sender: 'bot' }]);
+            setMessages(prev => [...prev, { id: nextId++, text: botResponse, sender: 'bot' }]);
         }, 1000);
     };
 

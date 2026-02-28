@@ -8,13 +8,7 @@ function Account() {
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        if (user) {
-            fetchHistory();
-        }
-    }, [user]);
-
-    const fetchHistory = async () => {
+    const fetchHistory = React.useCallback(async () => {
         try {
             setLoading(true);
             const data = await getHistory(user?.id);
@@ -24,7 +18,13 @@ function Account() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [user?.id]);
+
+    useEffect(() => {
+        if (user) {
+            fetchHistory();
+        }
+    }, [user, fetchHistory]);
 
     if (!user) return null;
 
