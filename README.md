@@ -7,7 +7,7 @@ CreditWise is a premium, full-stack web application that uses Machine Learning t
 - **Credit Engine**: A real-time simulator to see how changes in DTI, utilization, and score affect your odds.
 - **Smart ChatBot**: A resident financial assistant to answer platform-related questions.
 - **Unified Dashboard**: View simulation results and application history in one place.
-- **Modern UI**: Dark-mode optimized, glassmorphism design with fluid animations.
+- **Modern UI**: Dark-mode optimized, glassmorphism design with fluid animations..
 
 ## 🛠️ Tech Stack
 - **Frontend**: React, Vite, Tailwind CSS, Lucide Icons, Framer Motion.
