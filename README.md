@@ -14,22 +14,7 @@ CreditWise is a premium, full-stack web application that uses Machine Learning t
 - **Backend**: Python (Flask), Scikit-Learn, Pandas, Joblib.
 - **Deployment**: Vercel (Frontend), Render (Backend).
 
-## 🚀 Deployment Guide
-Follow the [Detailed Deployment Plan](./DEPLOY.md) to get your own `.vercel.app` link. 
 
-### Quick Start (Local)
-1. **Backend**: 
-   ```bash
-   cd backend
-   pip install -r requirements.txt
-   python app.py
-   ```
-2. **Frontend**:
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
 
 ---
 *Built with ❤️ for Financial Empowerment.*
