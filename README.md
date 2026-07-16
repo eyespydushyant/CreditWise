@@ -16,5 +16,5 @@ CreditWise is a premium, full-stack web application that uses Machine Learning t
 
 
 
----
+--
 *Built with ❤️ for Financial Empowerment.*
