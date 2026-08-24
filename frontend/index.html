@@ -7,6 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>CreditWise | AI Loan Predictor</title>
+  <script>
+    window.addEventListener('error', function (event) {
+      document.body.innerHTML += '<div style="color:red; background:white; position:fixed; z-index:9999; top:0; left:0; width:100%; white-space:pre-wrap; padding:20px;"><h2>ERROR: ' + event.message + '</h2><p>' + event.filename + ':' + event.lineno + '</p><pre>' + (event.error && event.error.stack) + '</pre></div>';
+    });
+    window.addEventListener('unhandledrejection', function (event) {
+      document.body.innerHTML += '<div style="color:red; background:white; position:fixed; z-index:9999; top:0; left:0; width:100%; white-space:pre-wrap; padding:20px;"><h2>PROMISE REJECTION: ' + event.reason + '</h2><pre>' + (event.reason && event.reason.stack) + '</pre></div>';
+    });
+  </script>
 </head>
 
 <body>

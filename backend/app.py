@@ -7,8 +7,14 @@ import joblib
 import numpy as np
 import os
 from datetime import datetime
-from google.oauth2 import id_token
-from google.auth.transport import requests as google_requests
+
+# Google auth imports — graceful fallback if not installed
+try:
+    from google.oauth2 import id_token
+    from google.auth.transport import requests as google_requests
+    GOOGLE_AUTH_AVAILABLE = True
+except ImportError:
+    GOOGLE_AUTH_AVAILABLE = False
 
 app = Flask(__name__)
 # Allow all origins for development, can be restricted in production
@@ -31,7 +37,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128))
+    password_hash = db.Column(db.String(256))  # Increased to support modern password hashes
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -273,17 +279,18 @@ def google_login():
     if not credential:
         return jsonify({'error': 'No credential provided'}), 400
 
+    if not GOOGLE_AUTH_AVAILABLE:
+        return jsonify({'error': 'Google auth library not installed on server.'}), 500
+
     CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID', '')
+    if not CLIENT_ID:
+        return jsonify({'error': 'Google Sign-In is not configured on this server. Please contact the administrator.'}), 503
+
     try:
-        if CLIENT_ID:
-            idinfo = id_token.verify_oauth2_token(credential, google_requests.Request(), CLIENT_ID)
-        else:
-            # Dev mode: decode without verifying audience (unsafe for production)
-            import jwt
-            idinfo = jwt.decode(credential, options={'verify_signature': False})
+        idinfo = id_token.verify_oauth2_token(credential, google_requests.Request(), CLIENT_ID)
 
         google_email = idinfo.get('email')
-        google_name  = idinfo.get('name', google_email.split('@')[0])
+        google_name  = idinfo.get('name', '') or (google_email.split('@')[0] if google_email else 'user')
         google_sub   = idinfo.get('sub')
 
         if not google_email:
@@ -293,7 +300,7 @@ def google_login():
         user = User.query.filter_by(email=google_email).first()
         if not user:
             # Create a username from name, ensure uniqueness
-            base_username = google_name.replace(' ', '').lower()[:20]
+            base_username = google_name.replace(' ', '').lower()[:20] or 'user'
             username = base_username
             counter = 1
             while User.query.filter_by(username=username).first():
@@ -301,7 +308,7 @@ def google_login():
                 counter += 1
 
             user = User(username=username, email=google_email)
-            user.set_password(google_sub)  # Use Google sub as password (not used for login)
+            user.set_password(google_sub)  # Use Google sub as password placeholder
             db.session.add(user)
             db.session.commit()
 
@@ -313,8 +320,10 @@ def google_login():
                 'email': user.email
             }
         })
+    except ValueError as e:
+        return jsonify({'error': f'Invalid Google token: {str(e)}'}), 401
     except Exception as e:
-        return jsonify({'error': f'Google token verification failed: {str(e)}'}), 401
+        return jsonify({'error': f'Google login failed: {str(e)}'}), 500
 
 @app.route('/history', methods=['GET'])
 def get_history():

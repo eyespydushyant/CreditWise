@@ -7,4 +7,5 @@ scikit-learn
 joblib
 gunicorn
 google-auth
-PyJWT
+requests
+werkzeug

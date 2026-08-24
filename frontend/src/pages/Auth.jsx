@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { GoogleLogin } from '@react-oauth/google';
-import { LogIn, UserPlus, Mail, Lock, User, ArrowRight, Sparkles } from 'lucide-react';
-import { AnimatePresence } from 'framer-motion';
+import { LogIn, UserPlus, Mail, Lock, User, ArrowRight, Sparkles, AlertCircle } from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+
+const GOOGLE_ENABLED = Boolean(import.meta.env.VITE_GOOGLE_CLIENT_ID);
 
 function Auth() {
     const [isLogin, setIsLogin] = useState(true);
@@ -147,19 +149,28 @@ function Auth() {
                     {/* Google Login Section */}
                     <div className="space-y-4 mb-8">
                         <motion.div
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
+                            whileHover={{ scale: GOOGLE_ENABLED ? 1.02 : 1 }}
+                            whileTap={{ scale: GOOGLE_ENABLED ? 0.98 : 1 }}
                             className="flex justify-center"
                         >
-                            <GoogleLogin
-                                onSuccess={handleGoogleSuccess}
-                                onError={handleGoogleError}
-                                size="large"
-                                width="340"
-                                theme="filled_black"
-                                shape="pill"
-                                text={isLogin ? "signin_with" : "signup_with"}
-                            />
+                            {GOOGLE_ENABLED ? (
+                                <div className="google-login-container">
+                                    <GoogleLogin
+                                        onSuccess={handleGoogleSuccess}
+                                        onError={handleGoogleError}
+                                        size="large"
+                                        width="340"
+                                        theme="filled_black"
+                                        shape="pill"
+                                        text={isLogin ? "signin_with" : "signup_with"}
+                                    />
+                                </div>
+                            ) : (
+                                <div className="w-full max-w-[340px] flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-slate-800/50 border border-slate-700/50 text-slate-500 cursor-not-allowed text-sm">
+                                    <AlertCircle size={16} />
+                                    <span>Google Sign-In not configured</span>
+                                </div>
+                            )}
                         </motion.div>
 
                         <div className="relative flex items-center justify-center">

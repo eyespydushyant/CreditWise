@@ -22,7 +22,6 @@ import './App.css';
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
 
-
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
   if (loading) return <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">Loading...</div>;
@@ -30,49 +29,58 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
-function App() {
+function AppContent() {
   return (
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-      <ThemeProvider>
-        <NotificationProvider>
-          <AuthProvider>
-            <Router>
-              <div className="min-h-screen bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 font-sans relative transition-colors duration-300">
-                <Navbar />
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/login" element={<Auth />} />
-                  <Route path="/predict" element={
-                    <ProtectedRoute>
-                      <Predict />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/improve" element={
-                    <ProtectedRoute>
-                      <CreditImprovement />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/credit-tips" element={<CreditIncrease />} />
-                  <Route path="/support" element={<Support />} />
-                  <Route path="/banks" element={<Banks />} />
-                  <Route path="/terms" element={<Terms />} />
-                  <Route path="/privacy" element={<Privacy />} />
-                  <Route path="/account" element={
-                    <ProtectedRoute>
-                      <Account />
-                    </ProtectedRoute>
-                  } />
-                </Routes>
-                <ChatBot />
-                <NotificationToast />
-                <Footer />
-              </div>
-            </Router>
-          </AuthProvider>
-        </NotificationProvider>
-      </ThemeProvider>
-    </GoogleOAuthProvider>
+    <ThemeProvider>
+      <NotificationProvider>
+        <AuthProvider>
+          <Router>
+            <div className="min-h-screen bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-slate-100 font-sans relative transition-colors duration-300">
+              <Navbar />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Auth />} />
+                <Route path="/predict" element={
+                  <ProtectedRoute>
+                    <Predict />
+                  </ProtectedRoute>
+                } />
+                <Route path="/improve" element={
+                  <ProtectedRoute>
+                    <CreditImprovement />
+                  </ProtectedRoute>
+                } />
+                <Route path="/credit-tips" element={<CreditIncrease />} />
+                <Route path="/support" element={<Support />} />
+                <Route path="/banks" element={<Banks />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/account" element={
+                  <ProtectedRoute>
+                    <Account />
+                  </ProtectedRoute>
+                } />
+              </Routes>
+              <ChatBot />
+              <NotificationToast />
+              <Footer />
+            </div>
+          </Router>
+        </AuthProvider>
+      </NotificationProvider>
+    </ThemeProvider>
   );
+}
+
+function App() {
+  if (GOOGLE_CLIENT_ID) {
+    return (
+      <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+        <AppContent />
+      </GoogleOAuthProvider>
+    );
+  }
+  return <AppContent />;
 }
 
 export default App;
